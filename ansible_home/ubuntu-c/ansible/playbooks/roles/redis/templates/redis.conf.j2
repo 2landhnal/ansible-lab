@@ -1,0 +1,32 @@
+bind {{ ansible_host }}
+port {{ redis_port | default(6379) }}
+
+tcp-backlog {{ redis_tcp_backlog | default(10240) }}
+timeout {{ redis_time_out | default(300) }}
+tcp-keepalive {{ redis_tcp_keepalive | default(300) }}
+loglevel {{ redis_log_level | default('notice') }}
+logfile {{ redis_log_file }}
+dir {{ redis_dir }}
+
+{% if redis_password is defined %}
+masterauth {{ redis_password }}
+requirepass {{ redis_password }}
+{% endif %}
+
+{% if inventory_hostname in groups['slaves'] %}
+replicaof {{ redis_master_host }} {{ redis_port | default(6379) }}
+{% endif %}
+
+replica-read-only {{ redis_replica_read_only | default('yes') }}
+replica-priority {{ redis_replica_priority | default(50) }}
+
+repl-backlog-size {{ redis_repl_backlog_size | default('512mb') }}
+
+slowlog-max-len {{ redis_slowlog_max_len | default(512) }}
+
+maxmemory {{ redis_maxmemory | default('2gb') }}
+
+appendonly {{ redis_appendonly | default('no') }}
+appendfsync {{ redis_appendfsync | default('everysec') }}
+
+io-threads {{ redis_io_threads | default(10) }}

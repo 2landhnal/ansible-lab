@@ -1,0 +1,10 @@
+- name: "Install redis"
+  hosts: redis_nodes
+  become: true
+  roles:
+    - redis
+- name: 
+  hosts: sentinel_nodes
+  become: true
+  roles:
+    - sentinel

@@ -1,0 +1,7 @@
+---
+# handlers file for sentinel
+- name: Restart sentinel
+  service:
+    name: redis-sentinel
+    state: restarted
+

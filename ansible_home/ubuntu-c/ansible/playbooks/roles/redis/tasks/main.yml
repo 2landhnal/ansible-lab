@@ -1,0 +1,34 @@
+---
+# tasks file for redis
+- name: Install redis
+  apt:
+    name: redis-server
+    state: present
+    update_cache: yes
+
+- name: Check version
+  command: redis-server --version
+
+- name: Config redis
+  template:
+    src: redis.conf.j2
+    dest: /etc/redis/redis.conf
+  notify: Restart redis
+
+- name: Enable redis
+  service:
+    name: redis-server
+    enabled: yes
+    state: started  
+
+- name: Get replication info from master
+  command: redis-cli -h {{ ansible_host  }} -a {{ redis_password }} INFO replication
+  register: master_replication
+  changed_when: false
+  when: inventory_hostname in groups['masters']
+
+- name: Ensure correct number of slaves connected
+  assert:
+    that:
+      - "'connected_slaves:' ~ (groups['slaves'] | length) in master_replication.stdout"
+  when: inventory_hostname in groups['masters']

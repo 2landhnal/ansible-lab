@@ -1,0 +1,14 @@
+[masters]
+redis-master ansible_host=ubuntu1
+
+[slaves]
+redis-slave-1 ansible_host=ubuntu2
+redis-slave-2 ansible_host=ubuntu3
+
+[redis_nodes:children]
+masters
+slaves
+
+[sentinel_nodes:children]
+masters
+slaves

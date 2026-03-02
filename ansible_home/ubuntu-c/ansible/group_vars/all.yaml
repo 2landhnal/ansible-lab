@@ -1,0 +1,52 @@
+# ========================
+# REDIS CORE
+# ========================
+
+redis_port: 6379
+redis_tcp_backlog: 10240
+redis_time_out: 300
+redis_tcp_keepalive: 300
+
+redis_log_level: "notice"
+redis_log_file: "/var/log/redis/redis-server.log"
+redis_dir: "/var/lib/redis"
+
+redis_password: "1111"   # optional
+
+redis_master_name: "mymaster"
+redis_master_host: "{{ hostvars[groups['masters'][0]].ansible_host }}"
+
+# ========================
+# REPLICATION
+# ========================
+
+redis_replica_read_only: "yes"
+redis_replica_priority: 50
+redis_repl_backlog_size: "512mb"
+
+# ========================
+# MEMORY & PERFORMANCE
+# ========================
+
+redis_slowlog_max_len: 512
+redis_maxmemory: "2gb"
+
+redis_appendonly: "no"
+redis_appendfsync: "everysec"
+
+redis_io_threads: 10
+
+# ========================
+# SENTINEL
+# ========================
+
+sentinel_port: 26379
+sentinel_logfile: "/var/log/redis/sentinel.log"
+sentinel_timeout: 300
+sentinel_quorum: 2
+
+sentinel_down_after_milliseconds: 30000
+sentinel_failover_timeout: 180000
+sentinel_parallel_syncs: 1
+
+sentinel_password: "2222"  # optional
